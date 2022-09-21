@@ -992,7 +992,11 @@ subroutine setupw(obsLL,odiagLL,lunin,mype,bwork,awork,nele,nobs,is,conv_diagsav
 !       Set and compute GOES CAWV specific departure parameters
         LNVD_wspd = spdob
         LNVD_omb = sqrt(dudiff*dudiff + dvdiff*dvdiff)
-        LNVD_ratio = LNVD_omb / log(LNVD_wspd)
+        if(LNVD_wspd > 1.0_r_kind) then
+           LNVD_ratio = LNVD_omb / log(LNVD_wspd)
+        else
+           LNVD_ratio = LNVD_omb
+        endif
         LNVD_threshold = 3.0_r_kind
         if( .not. wrf_nmm_regional) then   ! LNVD check not use for CAWV winds in HWRF
            if(LNVD_ratio >= LNVD_threshold .or. &      ! LNVD check
@@ -1022,7 +1026,11 @@ subroutine setupw(obsLL,odiagLL,lunin,mype,bwork,awork,nele,nobs,is,conv_diagsav
 !       Set and computes modis specific qc parameters
         LNVD_wspd = spdob
         LNVD_omb = sqrt(dudiff*dudiff + dvdiff*dvdiff)
-        LNVD_ratio = LNVD_omb / log(LNVD_wspd)
+        if(LNVD_wspd > 1.0_r_kind) then
+           LNVD_ratio = LNVD_omb / log(LNVD_wspd)
+        else
+           LNVD_ratio = LNVD_omb
+        endif
         LNVD_threshold = 3.0_r_kind
         if(LNVD_ratio >= LNVD_threshold .or. &      ! LNVD check
             (presw > prsfc-r200 .and. isli /= 0))then ! near surface check
@@ -1039,9 +1047,12 @@ subroutine setupw(obsLL,odiagLL,lunin,mype,bwork,awork,nele,nobs,is,conv_diagsav
 !       Set and computes modis specific qc parameters
         LNVD_wspd = spdob
         LNVD_omb = sqrt(dudiff*dudiff + dvdiff*dvdiff)
-        LNVD_ratio = LNVD_omb / log(LNVD_wspd)
+        if(LNVD_wspd > 1.0_r_kind) then
+           LNVD_ratio = LNVD_omb / log(LNVD_wspd)
+        else
+           LNVD_ratio = LNVD_omb
+        endif
         LNVD_threshold = 3.0_r_kind
-
         if(LNVD_ratio >= LNVD_threshold .or. &      ! LNVD check
             (presw > prsfc-r200 .and. isli /= 0))then ! near surface check
            error = zero
